@@ -8,6 +8,10 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import com.lazyee.filescanner.klib.config.ScanConfig
+import com.lazyee.filescanner.klib.entity.ScanFile
+import com.lazyee.filescanner.klib.handler.SimpleHandler
+import com.lazyee.filescanner.klib.listener.OnFileScanListener
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -22,8 +26,9 @@ import kotlin.system.measureTimeMillis
 private const val TAG = "FileScanner"
 class FileScanner(private val mContext: Context,) {
     private lateinit var scanConfig: ScanConfig
-    private var mOnFileScanListener:OnFileScanListener? = null
+    private var mOnFileScanListener: OnFileScanListener? = null
     private val mExecutorService :ExecutorService = Executors.newSingleThreadExecutor()
+    private val mHandler:SimpleHandler = SimpleHandler()
     companion object{
         fun with(context: Context): FileScanner {
             return FileScanner(context)
@@ -35,46 +40,45 @@ class FileScanner(private val mContext: Context,) {
         return this
     }
 
-    fun setFileScanListener(listener:OnFileScanListener): FileScanner {
+    fun setFileScanListener(listener: OnFileScanListener): FileScanner {
         mOnFileScanListener = listener
         return this
     }
 
     /**
-     * 获取所有的音频文件
+     * 开始扫描
      * @params context Context
      * @params scanConfigFilePath String 扫描配置文件路径
      */
-    fun start(): MutableList<ScanFile> {
+    fun start() {
+        mOnFileScanListener?.onFileScanStart()
         mExecutorService.submit {
+            try {
+                val scanFileList = mutableListOf<ScanFile>()
+                val timeCost = measureTimeMillis {
+                    getAllExternalDirs().forEach {
+                        val sdcardRootPath = it.absolutePath
+                        scanConfig.provideSpecifiedDirs().forEach { dir ->
+                            mergeFileList(
+                                scanFileList,
+                                deepFetchScanFile(generatePath(sdcardRootPath, dir))
+                            )
+                        }
+                        //遍历根目录下的疑似文件夹和根目录下的文件
+                        mergeFileList(scanFileList, deepFetchSuspectedDir(sdcardRootPath))
+                    }
+                    //            查找ContentProvider中的文件
+                    mergeFileList(scanFileList, queryFile(mContext))
 
-        }
-        val scanFileList = mutableListOf<ScanFile>()
-        val timeCost = measureTimeMillis {
-            getAllExternalDirs().forEach {
-                val sdcardRootPath = it.absolutePath
-                scanConfig.scanTargetDirs.forEach { dir ->
-                    mergeFileList(scanFileList, deepFetchScanFile(generatePath(sdcardRootPath,dir)))
+                    //倒序排序一下
+                    scanFileList.sortByDescending { it.getLastModified() }
+                    mHandler.callback { mOnFileScanListener?.onFileScanEnd(scanFileList) }
                 }
-                //遍历根目录下的疑似文件夹和根目录下的文件
-                mergeFileList(scanFileList,deepFetchSuspectedDir(sdcardRootPath))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                mHandler.callback { mOnFileScanListener?.onFileScanError(e) }
             }
-//            查找ContentProvider中的文件
-//            mergeFileList(scanFileList, queryFile(mContext))
-
-            //倒序排序一下
-            scanFileList.sortByDescending { it.getLastModified() }
-
         }
-
-        Log.e(TAG,"file list size:${scanFileList.size}")
-        scanFileList.forEach {
-            Log.e(TAG,"filePath:${it.getFilePath()}")
-        }
-
-        Log.e(TAG, "load all file time cost: $timeCost")
-
-        return scanFileList
     }
     /**
      * 生成ScanFile
@@ -92,7 +96,7 @@ class FileScanner(private val mContext: Context,) {
     fun createScanFile(file: File): ScanFile?{
         val suffix = ScanFile.getSuffix(file)
         if(TextUtils.isEmpty(suffix))return null
-        if(!scanConfig.supportFileType.contains(suffix))return null
+        if(!scanConfig.provideFileSuffix().contains(suffix))return null
 
         return  ScanFile(file)
     }
@@ -176,9 +180,9 @@ class FileScanner(private val mContext: Context,) {
      */
     private fun isUnlessDir(file: File): Boolean {
         if(!isAvailableDir(file)) return true
-        if(TextUtils.isEmpty(scanConfig.unlessDirRegexp))return false
+        if(TextUtils.isEmpty(scanConfig.provideExcludeDirRegexp()))return false
         val dirName = file.absolutePath.substring(file.absolutePath.lastIndexOf(File.separator))
-        return dirName.contains(Regex(scanConfig.unlessDirRegexp))
+        return dirName.contains(Regex(scanConfig.provideExcludeDirRegexp()))
     }
 
     /**
@@ -186,9 +190,9 @@ class FileScanner(private val mContext: Context,) {
      */
     private fun isSuspectedAudioDir(file: File): Boolean {
         if(!isAvailableDir(file)) return false
-        if(TextUtils.isEmpty(scanConfig.suspectedDirRegexp))return false
+        if(TextUtils.isEmpty(scanConfig.provideIncludeDirRegexp()))return false
         val dirName = file.absolutePath.substring(file.absolutePath.lastIndexOf(File.separator))
-        return dirName.contains(Regex(scanConfig.suspectedDirRegexp))
+        return dirName.contains(Regex(scanConfig.provideIncludeDirRegexp()))
     }
 
     /**

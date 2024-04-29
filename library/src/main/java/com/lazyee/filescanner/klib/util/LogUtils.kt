@@ -1,4 +1,4 @@
-package com.lazyee.filescanner.klib
+package com.lazyee.filescanner.klib.util
 
 import android.text.TextUtils
 import android.util.Log
@@ -12,7 +12,7 @@ internal object LogUtils {
 
     private var isDebug = true
     fun init(isDebug:Boolean){
-        this.isDebug = isDebug
+        LogUtils.isDebug = isDebug
     }
 
     fun d(tag: String?, any: Any?) {

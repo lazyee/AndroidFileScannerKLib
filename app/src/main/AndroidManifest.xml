@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".OfficeFileListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ImageFileListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".PdfFileListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ZipFileListActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

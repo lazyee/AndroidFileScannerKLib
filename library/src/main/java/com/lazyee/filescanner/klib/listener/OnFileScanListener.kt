@@ -1,10 +1,10 @@
-package com.lazyee.filescanner.klib
+package com.lazyee.filescanner.klib.listener
 
+import com.lazyee.filescanner.klib.entity.ScanFile
 import java.lang.Exception
 
 interface OnFileScanListener {
     fun onFileScanStart()
-    fun onFileScan(file:ScanFile)
     fun onFileScanEnd(fileList:List<ScanFile>)
     fun onFileScanError(e:Exception)
 }

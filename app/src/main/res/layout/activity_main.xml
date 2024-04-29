@@ -3,8 +3,28 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnOfficeFileList"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="hello world"/>
+        android:textAllCaps="false"
+        android:text="Office文件列表"/>
+    <Button
+        android:id="@+id/btnImageFileList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="图片文件列表"/>
+    <Button
+        android:id="@+id/btnPdfFileList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="pdf文件列表"/>
+    <Button
+        android:id="@+id/btnZipFileList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="压缩包列表"/>
 </LinearLayout>

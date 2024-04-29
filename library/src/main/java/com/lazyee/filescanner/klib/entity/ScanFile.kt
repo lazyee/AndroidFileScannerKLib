@@ -1,4 +1,4 @@
-package com.lazyee.filescanner.klib
+package com.lazyee.filescanner.klib.entity
 
 import java.io.File
 
@@ -8,8 +8,16 @@ data class ScanFile(val file : File){
         return file.absolutePath
     }
 
+    fun getName(): String {
+        return file.name
+    }
+
     fun getLastModified():Long{
         return file.lastModified()
+    }
+
+    fun getSuffix(): String {
+        return getSuffix(file)
     }
 
     companion object{
