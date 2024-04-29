@@ -19,8 +19,8 @@
   ]
 }
 ```
-`scanTargetDirs`:一定要扫描的文件夹
-`supportFileType`:支持的文件格式
-`unlessDirRegexp`:表示的是无用文件夹的正则表达式
-`suspectedAudioRegexp`:表示的是疑似有用的正则表达式
+`scanTargetDirs`:一定要扫描的文件夹  
+`supportFileType`:支持的文件格式  
+`unlessDirRegexp`:表示的是无用文件夹的正则表达式  
+`suspectedAudioRegexp`:表示的是疑似有用的正则表达式  
 
