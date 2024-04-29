@@ -19,8 +19,8 @@
   ]
 }
 ```
-`specifiedDirs`:指定扫描的文件夹 
-`fileSuffix`:支持的文件后缀
+`specifiedDirs`:指定扫描的文件夹  
+`fileSuffix`:支持的文件后缀  
 `excludeDirRegexp`:表示的是排除文件夹的正则表达式  
 `includeDirRegexp`:表示的是包含文件夹的正则表达式  
 
