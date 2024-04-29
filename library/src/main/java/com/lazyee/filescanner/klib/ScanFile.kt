@@ -3,7 +3,6 @@ package com.lazyee.filescanner.klib
 import java.io.File
 
 data class ScanFile(val file : File){
-    var source:String = ""
 
     fun getFilePath():String{
         return file.absolutePath
