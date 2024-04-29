@@ -7,6 +7,7 @@ import com.hjq.permissions.XXPermissions
 import com.lazyee.filescanner.klib.FileScanner
 import com.lazyee.filescanner.klib.ScanConfig
 import com.lazyee.klib.base.BaseActivity
+import java.lang.reflect.Field
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +19,10 @@ class MainActivity : AppCompatActivity() {
             .permission(android.Manifest.permission.READ_EXTERNAL_STORAGE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .request(OnPermissionCallback { p0, p1 ->
                 if(p1){
-                    FileScanner(this,ScanConfig.getDefaultScanConfig(this)).scan()
+//                    FileScanner(this,ScanConfig.getDefaultScanConfig(this)).scan()
+                    FileScanner.with(this)
+                        .setScanConfig(ScanConfig.getDefaultScanConfig(this))
+                        .start()
                 }
             })
 

@@ -9,6 +9,8 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.system.measureTimeMillis
 
 /**
@@ -18,27 +20,47 @@ import kotlin.system.measureTimeMillis
  * Date: 2022/3/31 3:38 下午
  */
 private const val TAG = "FileScanner"
-class FileScanner(private val mContext: Context,private val scanConfig: ScanConfig) {
+class FileScanner(private val mContext: Context,) {
+    private lateinit var scanConfig: ScanConfig
+    private var mOnFileScanListener:OnFileScanListener? = null
+    private val mExecutorService :ExecutorService = Executors.newSingleThreadExecutor()
+    companion object{
+        fun with(context: Context): FileScanner {
+            return FileScanner(context)
+        }
+    }
+
+    fun setScanConfig(config: ScanConfig): FileScanner {
+        scanConfig = config
+        return this
+    }
+
+    fun setFileScanListener(listener:OnFileScanListener): FileScanner {
+        mOnFileScanListener = listener
+        return this
+    }
 
     /**
      * 获取所有的音频文件
      * @params context Context
      * @params scanConfigFilePath String 扫描配置文件路径
      */
-    fun scan(): MutableList<ScanFile> {
+    fun start(): MutableList<ScanFile> {
+        mExecutorService.submit {
+
+        }
         val scanFileList = mutableListOf<ScanFile>()
         val timeCost = measureTimeMillis {
             getAllExternalDirs().forEach {
                 val sdcardRootPath = it.absolutePath
                 scanConfig.scanTargetDirs.forEach { dir ->
-//                    Log.e("leeorz","scamtargetDir:${scanTargetDir.getDirPath()}")
-                        mergeFileList(scanFileList, deepFetchScanFile(generatePath(sdcardRootPath,dir)))
+                    mergeFileList(scanFileList, deepFetchScanFile(generatePath(sdcardRootPath,dir)))
                 }
                 //遍历根目录下的疑似文件夹和根目录下的文件
                 mergeFileList(scanFileList,deepFetchSuspectedDir(sdcardRootPath))
             }
 //            查找ContentProvider中的文件
-            mergeFileList(scanFileList, queryFile(mContext))
+//            mergeFileList(scanFileList, queryFile(mContext))
 
             //倒序排序一下
             scanFileList.sortByDescending { it.getLastModified() }
@@ -75,15 +97,17 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
         return  ScanFile(file)
     }
 
-    /**
-     * 查询查询音频Uri
-     */
-    private fun queryFile(context: Context): List<ScanFile> {
+    private fun queryFile(context: Context):List<ScanFile>{
+        val result = mutableListOf<ScanFile>()
+        result.addAll(realQueryFile(context,MediaStore.Files.getContentUri("external")))
+        result.addAll(realQueryFile(context,MediaStore.Files.getContentUri("internal")))
+        return result
+    }
+
+    private fun realQueryFile(context: Context,uri:Uri):List<ScanFile>{
         val scanFileList = mutableListOf<ScanFile>()
-        val externalUri = MediaStore.Files.getContentUri("external")
-//        val selection = MediaStore.Files.FileColumns.DATE_ADDED
         val cursor = context.contentResolver.query(
-            externalUri,
+            uri,
             null,
             null,
             null, "${MediaStore.Files.FileColumns.DATE_ADDED} DESC"
@@ -91,6 +115,7 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
         cursor?.run {
             while (moveToNext()) {
                 val filePath = getString(getColumnIndex(MediaStore.Files.FileColumns.DATA))
+//                LogUtils.e(TAG,"realQueryFile filePath:$filePath")
                 if(scanFileList.find { it.getFilePath() == filePath } != null) continue
                 createScanFile(filePath)?.run { scanFileList.add(this) }
             }
