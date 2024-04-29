@@ -25,12 +25,13 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
      * @params context Context
      * @params scanConfigFilePath String 扫描配置文件路径
      */
-    fun loadAllAudio(): MutableList<ScanFile> {
+    fun scan(): MutableList<ScanFile> {
         val scanFileList = mutableListOf<ScanFile>()
         val timeCost = measureTimeMillis {
             getAllExternalDirs().forEach {
                 val sdcardRootPath = it.absolutePath
 
+                Log.e(TAG,"scanTargetDirs size:${scanConfig.scanTargetDirs.size}")
                 scanConfig.scanTargetDirs.forEach { dir ->
 //                    Log.e("leeorz","scamtargetDir:${scanTargetDir.getDirPath()}")
                         mergeFileList(scanFileList, deepFetchScanFile(generatePath(sdcardRootPath,dir)))
@@ -43,6 +44,12 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
 
             //倒序排序一下
             scanFileList.sortByDescending { it.getLastModified() }
+
+        }
+
+        Log.e(TAG,"file list size:${scanFileList.size}")
+        scanFileList.forEach {
+            Log.e(TAG,"filePath:${it.getFilePath()}")
         }
 
         Log.e(TAG, "load all file time cost: $timeCost")

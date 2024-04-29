@@ -1,5 +1,5 @@
 {
-  "supportFileType":[],
+  "supportFileType":["doc","docx","ppt","pptx","xls","xlsx","pdf"],
   "unlessDirRegexp":"(image)|(IMAGE)|(imagecache)|(imageCache)|(encrypt)|(ENCRYPT)|(decrypt)|(DECRYPT)|(request)|(REQUEST)|(thumb)|(THUMB)|(apk)|(APK)|(error)|(mail)|(MAIL)|(log)|(xlog)|(video)|(VIDEO)|(Video)|(videocache)|(icon)|(photo)|(PHOTO)|(Photo)",
   "suspectedAudioRegexp":"(record)|(Record)|(RECORD)|(sound)|(Sound)|(SOUND)|(mp3)|(MP3)|(audio)|(AUDIO)|(音频)|(资料)|(会议)|(录音)|(记录)|(文档)|(文件)",
   "scanTargetDirs":[
