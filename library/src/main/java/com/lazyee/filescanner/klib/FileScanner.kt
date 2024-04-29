@@ -30,8 +30,6 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
         val timeCost = measureTimeMillis {
             getAllExternalDirs().forEach {
                 val sdcardRootPath = it.absolutePath
-
-                Log.e(TAG,"scanTargetDirs size:${scanConfig.scanTargetDirs.size}")
                 scanConfig.scanTargetDirs.forEach { dir ->
 //                    Log.e("leeorz","scamtargetDir:${scanTargetDir.getDirPath()}")
                         mergeFileList(scanFileList, deepFetchScanFile(generatePath(sdcardRootPath,dir)))
@@ -159,13 +157,13 @@ class FileScanner(private val mContext: Context,private val scanConfig: ScanConf
     }
 
     /**
-     * 是否是疑似音频文件夹
+     * 是否是疑似目标文件的文件夹
      */
     private fun isSuspectedAudioDir(file: File): Boolean {
         if(!isAvailableDir(file)) return false
-        if(TextUtils.isEmpty(scanConfig.suspectedAudioRegexp))return false
+        if(TextUtils.isEmpty(scanConfig.suspectedDirRegexp))return false
         val dirName = file.absolutePath.substring(file.absolutePath.lastIndexOf(File.separator))
-        return dirName.contains(Regex(scanConfig.suspectedAudioRegexp))
+        return dirName.contains(Regex(scanConfig.suspectedDirRegexp))
     }
 
     /**

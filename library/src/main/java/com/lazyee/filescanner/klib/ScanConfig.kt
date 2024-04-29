@@ -14,7 +14,7 @@ import java.io.BufferedInputStream
 class ScanConfig(private val configJson:String) {
     var supportFileType: MutableList<String> = mutableListOf()//支持的文件后缀
     var unlessDirRegexp: String = ""//无用文件夹正则表达式
-    var suspectedAudioRegexp: String = ""//疑似文件夹正则表达式
+    var suspectedDirRegexp: String = ""//疑似文件夹正则表达式
     var scanTargetDirs: MutableList<String> = mutableListOf()//扫描的目标文件夹
 
     fun getDisplaySupportFileType(): String {
@@ -32,7 +32,7 @@ class ScanConfig(private val configJson:String) {
     private fun parseScanConfig() {
         val jsonObject = JSONObject(configJson)
         unlessDirRegexp = jsonObject.optString("unlessDirRegexp", "")
-        suspectedAudioRegexp = jsonObject.optString("suspectedAudioRegexp", "")
+        suspectedDirRegexp = jsonObject.optString("suspectedDirRegexp", "")
         val supportFileTypeList = jsonObject.optJSONArray("supportFileType")
         supportFileTypeList?.run {
             repeat(length()) {
