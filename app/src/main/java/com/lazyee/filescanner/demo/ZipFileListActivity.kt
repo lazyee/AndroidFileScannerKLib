@@ -2,7 +2,7 @@ package com.lazyee.filescanner.demo
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.lazyee.filescanner.demo.adapter.FileAdapter
+import com.lazyee.filescanner.demo.adapter.FileListAdapter
 import com.lazyee.filescanner.demo.databinding.ActivityZipFileListBinding
 import com.lazyee.filescanner.klib.FileScanner
 import com.lazyee.filescanner.klib.listener.OnFileScanListener
@@ -19,12 +19,12 @@ import java.lang.Exception
  */
 class ZipFileListActivity : ViewBindingActivity<ActivityZipFileListBinding>() , OnFileScanListener {
     private val scanFileList = mutableListOf<ScanFile>()
-    private val fileAdapter by lazy { FileAdapter(scanFileList) }
+    private val fileListAdapter by lazy { FileListAdapter(scanFileList) }
 
     override fun initView() {
         super.initView()
 
-        mViewBinding.recyclerView.adapter = fileAdapter
+        mViewBinding.recyclerView.adapter = fileListAdapter
 
         startScan()
     }
@@ -45,7 +45,7 @@ class ZipFileListActivity : ViewBindingActivity<ActivityZipFileListBinding>() , 
         Log.e("TAG","onFileScanEnd:${fileList.size}")
         scanFileList.clear()
         scanFileList.addAll(fileList)
-        fileAdapter.notifyDataSetChanged()
+        fileListAdapter.notifyDataSetChanged()
     }
 
     override fun onFileScanError(e: Exception) {

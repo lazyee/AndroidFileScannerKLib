@@ -6,7 +6,7 @@ package com.lazyee.filescanner.klib.config
  * Description:图片
  * Date: 2024/4/29 22:13
  */
-class ImageScanConfig :DefaultScanConfig() {
+open class ImageScanConfig :DefaultScanConfig() {
     override fun provideFileSuffix(): Array<String> {
         return arrayOf("png","jpg","jpeg","bmp","gif")
     }

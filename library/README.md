@@ -1,11 +1,11 @@
 ```json
 {
   "fileSuffix":["doc","docx","ppt","pptx","xls","xlsx","pdf"],
+  "startTime":1716160940802,
+  "endTime":1716160940802,
   "excludeDirRegexp":"(image)|(IMAGE)|(imagecache)|(imageCache)|(encrypt)|(ENCRYPT)|(decrypt)|(DECRYPT)|(request)|(REQUEST)|(thumb)|(THUMB)|(apk)|(APK)|(error)|(mail)|(MAIL)|(log)|(xlog)|(video)|(VIDEO)|(Video)|(videocache)|(icon)|(photo)|(PHOTO)|(Photo)",
   "includeDirRegexp":"(record)|(Record)|(RECORD)|(sound)|(Sound)|(SOUND)|(mp3)|(MP3)|(audio)|(AUDIO)|(音频)|(资料)|(会议)|(录音)|(记录)|(文档)|(文件)",
   "specifiedDirs":[
-    "MIUI/sound_recorder",
-    "Music/Recordings",
     "Android/data/com.tencent.mm/MicroMsg/Download",
     "tencent/MicroMsg/WeiXin",
     "Android/data/com.alibaba.android.rimet",
@@ -21,6 +21,8 @@
 ```
 `specifiedDirs`:指定扫描的文件夹  
 `fileSuffix`:支持的文件后缀  
+`startTime`:开始时间(毫秒速)  
+`endTime`:结束时间(毫秒速)  
 `excludeDirRegexp`:表示的是排除文件夹的正则表达式  
 `includeDirRegexp`:表示的是包含文件夹的正则表达式  
 

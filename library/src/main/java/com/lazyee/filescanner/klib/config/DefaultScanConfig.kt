@@ -11,7 +11,7 @@ import java.io.BufferedInputStream
  * Description:音频扫描配置
  * Date: 2022/6/2 2:20 下午
  */
-open class DefaultScanConfig:ScanConfig {
+open class DefaultScanConfig : ScanConfig {
 
     override fun provideFileSuffix(): Array<String> {
         return arrayOf("doc","docx","ppt","pptx","xls","xlsx","pdf","png","txt","jpeg","jpg")
@@ -27,8 +27,6 @@ open class DefaultScanConfig:ScanConfig {
 
     override fun provideSpecifiedDirs(): Array<String> {
         return arrayOf(
-            "MIUI/sound_recorder",
-            "Music/Recordings",
             "Android/data/com.tencent.mm/MicroMsg/Download",
             "tencent/MicroMsg/WeiXin",
             "Android/data/com.alibaba.android.rimet",
@@ -48,6 +46,8 @@ open class DefaultScanConfig:ScanConfig {
             val jsonObject = JSONObject(configJson)
             val excludeDirRegexp = jsonObject.optString("excludeDirRegexp", "")
             val includeDirRegexp = jsonObject.optString("includeDirRegexp", "")
+            val starTime = jsonObject.optLong("startTime",-1)
+            val endTime = jsonObject.optLong("endTime",-1)
             val fileSuffixJsonArray = jsonObject.optJSONArray("fileSuffix")
             val fileSuffix =Array<String>(fileSuffixJsonArray?.length()?:0) {""}
 
@@ -79,6 +79,14 @@ open class DefaultScanConfig:ScanConfig {
 
                 override fun provideSpecifiedDirs(): Array<String> {
                     return specifiedDirs
+                }
+
+                override fun provideStartTime(): Long? {
+                    return if(starTime < 0) null else starTime
+                }
+
+                override fun provideEndTime(): Long? {
+                    return if(endTime < 0) null else endTime
                 }
 
             }

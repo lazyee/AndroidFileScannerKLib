@@ -2,8 +2,9 @@ package com.lazyee.filescanner.demo
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.lazyee.filescanner.demo.adapter.FileAdapter
+import com.lazyee.filescanner.demo.adapter.FileListAdapter
 import com.lazyee.filescanner.demo.databinding.ActivityImageFileListBinding
+import com.lazyee.filescanner.demo.preview.ImagePreviewActivity
 import com.lazyee.filescanner.klib.FileScanner
 import com.lazyee.filescanner.klib.listener.OnFileScanListener
 import com.lazyee.filescanner.klib.entity.ScanFile
@@ -20,12 +21,15 @@ import java.lang.Exception
 class ImageFileListActivity : ViewBindingActivity<ActivityImageFileListBinding>() ,
     OnFileScanListener {
     private val scanFileList = mutableListOf<ScanFile>()
-    private val fileAdapter by lazy { FileAdapter(scanFileList) }
+    private val fileListAdapter by lazy { FileListAdapter(scanFileList) }
 
     override fun initView() {
         super.initView()
 
-        mViewBinding.recyclerView.adapter = fileAdapter
+        fileListAdapter.setItemClick {
+            ImagePreviewActivity.gotoThis(this@ImageFileListActivity,it.getFilePath())
+        }
+        mViewBinding.recyclerView.adapter = fileListAdapter
 
         startScan()
     }
@@ -33,8 +37,16 @@ class ImageFileListActivity : ViewBindingActivity<ActivityImageFileListBinding>(
     private fun startScan(){
         FileScanner.with(this)
             .setFileScanListener(this)
-            .setScanConfig(ImageScanConfig())
+            .setScanConfig(MyImageScanConfig())
             .start()
+    }
+
+    private class MyImageScanConfig:ImageScanConfig(){
+        override fun provideStartTime(): Long? {
+//            return System.currentTimeMillis() - 30L * 24 * 3600 * 1000
+            return null
+        }
+
     }
 
     override fun onFileScanStart() {
@@ -46,7 +58,7 @@ class ImageFileListActivity : ViewBindingActivity<ActivityImageFileListBinding>(
         Log.e("TAG","onFileScanEnd:${fileList.size}")
         scanFileList.clear()
         scanFileList.addAll(fileList)
-        fileAdapter.notifyDataSetChanged()
+        fileListAdapter.notifyDataSetChanged()
     }
 
     override fun onFileScanError(e: Exception) {

@@ -2,7 +2,15 @@ package com.lazyee.filescanner.klib.entity
 
 import java.io.File
 
-data class ScanFile(val file : File){
+class ScanFile{
+    private val file:File
+
+    constructor(filePath: String){
+       file = File(filePath)
+    }
+    constructor(file: File){
+        this.file = file
+    }
 
     fun getFilePath():String{
         return file.absolutePath

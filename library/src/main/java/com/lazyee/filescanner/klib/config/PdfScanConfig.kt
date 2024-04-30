@@ -6,7 +6,7 @@ package com.lazyee.filescanner.klib.config
  * Description:pdf
  * Date: 2024/4/29 22:13
  */
-class PdfScanConfig :DefaultScanConfig() {
+open class PdfScanConfig :DefaultScanConfig() {
     override fun provideFileSuffix(): Array<String> {
         return arrayOf("pdf")
     }

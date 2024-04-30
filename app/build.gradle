@@ -48,4 +48,5 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx_coroutines_android}"
     implementation project(":library")
     implementation 'com.github.lazyee:AndroidKLib:0.1.22'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

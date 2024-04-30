@@ -4,6 +4,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="列表"/>
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="0dp"/>
+        <Button
+            android:id="@+id/btnGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="网格"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
