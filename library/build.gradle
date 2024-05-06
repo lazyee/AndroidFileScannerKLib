@@ -35,8 +35,8 @@ android {
 
 dependencies {
     implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    api "androidx.appcompat:appcompat:${versions.appcompat}"
-    api "com.google.android.material:material:${versions.material}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "com.google.android.material:material:${versions.material}"
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test.ext:junit:${versions.android_junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
