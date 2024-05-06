@@ -21,8 +21,8 @@
 ```
 `specifiedDirs`:指定扫描的文件夹  
 `fileSuffix`:支持的文件后缀  
-`startTime`:开始时间(毫秒速)  
-`endTime`:结束时间(毫秒速)  
+`startTime`:开始时间(毫秒数)  
+`endTime`:结束时间(毫秒数)  
 `excludeDirRegexp`:表示的是排除文件夹的正则表达式  
 `includeDirRegexp`:表示的是包含文件夹的正则表达式  
 
