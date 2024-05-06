@@ -3,29 +3,29 @@ package com.lazyee.filescanner.klib.entity
 import java.io.File
 
 class ScanFile{
-    private val file:File
+    val realFile:File
 
     constructor(filePath: String){
-       file = File(filePath)
+       realFile = File(filePath)
     }
     constructor(file: File){
-        this.file = file
+        this.realFile = file
     }
 
     fun getFilePath():String{
-        return file.absolutePath
+        return realFile.absolutePath
     }
 
     fun getName(): String {
-        return file.name
+        return realFile.name
     }
 
     fun getLastModified():Long{
-        return file.lastModified()
+        return realFile.lastModified()
     }
 
     fun getSuffix(): String {
-        return getSuffix(file)
+        return getSuffix(realFile)
     }
 
     companion object{
