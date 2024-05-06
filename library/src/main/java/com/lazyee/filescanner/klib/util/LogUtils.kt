@@ -2,6 +2,7 @@ package com.lazyee.filescanner.klib.util
 
 import android.text.TextUtils
 import android.util.Log
+import com.lazyee.filescanner.klib.BuildConfig
 
 /**
  * @Author leeorz
@@ -10,10 +11,7 @@ import android.util.Log
  */
 internal object LogUtils {
 
-    private var isDebug = true
-    fun init(isDebug:Boolean){
-        LogUtils.isDebug = isDebug
-    }
+    private var isDebug = BuildConfig.DEBUG
 
     fun d(tag: String?, any: Any?) {
         if (!isDebug) return
