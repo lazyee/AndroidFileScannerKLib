@@ -34,11 +34,11 @@ android {
 }
 
 dependencies {
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "com.google.android.material:material:${versions.material}"
+//    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+//    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+//    implementation "com.google.android.material:material:${versions.material}"
     testImplementation "junit:junit:${versions.junit}"
-    androidTestImplementation "androidx.test.ext:junit:${versions.android_junit}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
+//    androidTestImplementation "androidx.test.ext:junit:${versions.android_junit}"
+//    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
 }
