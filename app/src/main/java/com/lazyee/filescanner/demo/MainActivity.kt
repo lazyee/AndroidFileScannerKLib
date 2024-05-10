@@ -20,6 +20,7 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>(){
             btnImageFileList.setOnClickListener { goto(ImageFileListActivity::class.java) }
             btnPdfFileList.setOnClickListener { goto(PdfFileListActivity::class.java) }
             btnZipFileList.setOnClickListener { goto(ZipFileListActivity::class.java) }
+            btnAudioList.setOnClickListener { goto(AudioListActivity::class.java) }
         }
     }
 

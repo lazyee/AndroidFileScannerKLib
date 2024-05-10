@@ -27,16 +27,16 @@ open class DefaultScanConfig : ScanConfig {
 
     override fun provideSpecifiedDirs(): Array<String> {
         return arrayOf(
-            "Android/data/com.tencent.mm/MicroMsg/Download",
+            "Android/data/com.tencent.mm/MicroMsg/Download",//微信
             "tencent/MicroMsg/WeiXin",
-            "Android/data/com.alibaba.android.rimet",
+            "Android/data/com.alibaba.android.rimet",//钉钉
             "DingTalk",
-            "Android/data/com.tencent.wework/files/filecache",
-            "Android/data/com.tencent.mobileqq/Tencent/QQfile_recv",
+            "Android/data/com.tencent.wework/files/filecache",//企业微信
+            "Android/data/com.tencent.mobileqq/Tencent/QQfile_recv",//QQ
             "tencent/QQfile_recv",
-            "tencent/QQmail",
+            "tencent/QQmail",//QQ邮箱
             "Download/QQMail",
-            "Download"
+            "Download",//下载
         )
     }
 

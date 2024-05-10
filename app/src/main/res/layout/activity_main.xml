@@ -27,4 +27,10 @@
         android:layout_height="wrap_content"
         android:textAllCaps="false"
         android:text="压缩包列表"/>
+    <Button
+        android:id="@+id/btnAudioList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="音频列表"/>
 </LinearLayout>

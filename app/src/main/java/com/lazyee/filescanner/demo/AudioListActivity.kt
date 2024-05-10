@@ -1,0 +1,57 @@
+package com.lazyee.filescanner.demo
+
+import android.annotation.SuppressLint
+import android.util.Log
+import com.lazyee.filescanner.demo.adapter.FileListAdapter
+import com.lazyee.filescanner.demo.databinding.ActivityAudioListBinding
+import com.lazyee.filescanner.demo.databinding.ActivityZipFileListBinding
+import com.lazyee.filescanner.klib.FileScanner
+import com.lazyee.filescanner.klib.config.AudioScanConfig
+import com.lazyee.filescanner.klib.listener.OnFileScanListener
+import com.lazyee.filescanner.klib.entity.ScanFile
+import com.lazyee.filescanner.klib.config.ZipScanConfig
+import com.lazyee.klib.base.ViewBindingActivity
+import java.lang.Exception
+
+/**
+ * Author: leeorz
+ * Email: 378229364@qq.com
+ * Description:
+ * Date: 2024/4/29 22:16
+ */
+class AudioListActivity : ViewBindingActivity<ActivityAudioListBinding>() , OnFileScanListener {
+    private val scanFileList = mutableListOf<ScanFile>()
+    private val fileListAdapter by lazy { FileListAdapter(scanFileList) }
+
+    override fun initView() {
+        super.initView()
+
+        mViewBinding.recyclerView.adapter = fileListAdapter
+
+        startScan()
+    }
+
+    private fun startScan(){
+        FileScanner.with(this)
+            .setFileScanListener(this)
+            .setScanConfig(AudioScanConfig())
+            .start()
+    }
+
+    override fun onFileScanStart() {
+        Log.e("TAG","onFileScanStart")
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onFileScanEnd(fileList: List<ScanFile>) {
+        Log.e("TAG","onFileScanEnd:${fileList.size}")
+        scanFileList.clear()
+        scanFileList.addAll(fileList)
+        fileListAdapter.notifyDataSetChanged()
+    }
+
+    override fun onFileScanError(e: Exception) {
+        Log.e("TAG","onFileScanError:${e.toString()}")
+    }
+
+}

@@ -42,6 +42,10 @@ class FileListAdapter(private val scanFileList:List<ScanFile>): FileAdapter<File
                 "jpeg",
                 "jpg"-> return R.drawable.ic_jpg
                 "zip"-> return R.drawable.ic_zip
+                "aac",
+                "mp3",
+                "m4a",
+                "wav"-> return R.drawable.ic_audio
             }
             return R.drawable.ic_other
         }
